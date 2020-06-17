@@ -3,7 +3,6 @@ import StudentRecord from "./studentRecord";
 
 class StudentList extends Component {
   render() {
-    console.log("student list props", this.props.students);
     return (
       <div className="row">
         {this.props.students.map((student) => (
@@ -11,6 +10,7 @@ class StudentList extends Component {
             key={student.id}
             student={student}
             onEditClick={(id) => this.props.onEditClick(id)}
+            onDeleteClick={(id) => this.props.onDeleteClick(id)}
           />
         ))}
       </div>

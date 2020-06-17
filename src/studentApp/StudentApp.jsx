@@ -4,16 +4,28 @@ import StudentStats from "./studentStats";
 import StudentEdit from "./studentEdit";
 
 class StudentApp extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       students: [],
+      // avoid transforming uncontrolled to controlled component
+      selectedStudent: {
+        id: 0,
+        name: "",
+        age: 0,
+        gender: true,
+        location: "",
+      },
     };
 
-    this.handleAddStudent = this.handleAddStudent.bind(this);
     this.handlePopulateDummyData = this.handlePopulateDummyData.bind(this);
     this.handleSaveToStorage = this.handleSaveToStorage.bind(this);
     this.handleRemoveStorage = this.handleRemoveStorage.bind(this);
+
+    this.handleDisplayAddPopup = this.handleDisplayAddPopup.bind(this);
+    this.handleDisplayEditPopup = this.handleDisplayEditPopup.bind(this);
+    this.handleUpdateStudent = this.handleUpdateStudent.bind(this);
+    this.handleDeleteStudent = this.handleDeleteStudent.bind(this);
   }
 
   loadDataFromStorage = () => {
@@ -23,8 +35,6 @@ class StudentApp extends Component {
       students = JSON.parse(data);
       this.setState({ students });
     }
-
-    return students;
   };
 
   totalStudents() {
@@ -34,8 +44,6 @@ class StudentApp extends Component {
       return 0;
     }
   }
-
-  handleAddStudent() {}
 
   handlePopulateDummyData() {
     const students = [
@@ -62,8 +70,63 @@ class StudentApp extends Component {
     localStorage.removeItem("studentApp");
   }
 
+  handleDisplayAddPopup() {
+    const selectedStudent = {
+      id: 0,
+      name: "",
+      age: 0,
+      gender: true,
+      location: "",
+    };
+    this.setState({ selectedStudent });
+  }
+
+  handleDisplayEditPopup(studentId) {
+    const selectedStudent = this.state.students.filter(
+      (s) => s.id === studentId
+    )[0];
+    this.setState({ selectedStudent });
+  }
+
+  handleUpdateStudent(student) {
+    if (student.id === 0) {
+      const newStudent = {
+        id: this.generateId(),
+        name: student.name,
+        age: student.age,
+        gender: student.gender,
+        location: student.location,
+      };
+      this.state.students.push(newStudent);
+      this.setState({
+        students: this.state.students,
+      });
+    } else {
+      this.setState({
+        students: this.state.students.map((x) => {
+          if (x.id === student.id) return student;
+          return x;
+        }),
+      });
+    }
+  }
+
+  handleDeleteStudent(studentId) {
+    this.setState({
+      students: this.state.students.filter((x) => x.id !== studentId),
+    });
+  }
+
   componentDidMount() {
     this.loadDataFromStorage();
+  }
+
+  generateId() {
+    let id = 1;
+    while (this.state.students.map((s) => s.id).includes(id)) {
+      id++;
+    }
+    return id;
   }
 
   render() {
@@ -83,6 +146,7 @@ class StudentApp extends Component {
             className="btn btn-primary m-2"
             data-toggle="modal"
             data-target="#studentEdit"
+            onClick={this.handleDisplayAddPopup}
           >
             Add student
           </button>
@@ -101,9 +165,13 @@ class StudentApp extends Component {
           <StudentStats totalStudents={this.totalStudents()} />
           <StudentList
             students={this.state.students}
-            onEditClick={(id) => console.log(id)}
+            onEditClick={(studentId) => this.handleDisplayEditPopup(studentId)}
+            onDeleteClick={this.handleDeleteStudent}
           />
-          <StudentEdit />
+          <StudentEdit
+            student={this.state.selectedStudent}
+            updateStudent={this.handleUpdateStudent}
+          />
         </div>
       </div>
     );

@@ -10,16 +10,23 @@ class StudentRecord extends Component {
             <h5 className="card-title">{this.props.student.name}</h5>
             <p className="card-text">Age: {this.props.student.age}</p>
             <p className="card-text">
-              Age: {this.props.student.gender ? "Male" : "Female"}
+              Gender: {this.props.student.gender ? "Male" : "Female"}
             </p>
             <p className="card-text">Location: {this.props.student.location}</p>
             <button
               className="btn btn-primary"
+              data-toggle="modal"
+              data-target="#studentEdit"
               onClick={() => this.props.onEditClick(this.props.student.id)}
             >
               Edit
             </button>
-            <button className="btn btn-primary m-2">Delete</button>
+            <button
+              className="btn btn-primary m-2"
+              onClick={() => this.props.onDeleteClick(this.props.student.id)}
+            >
+              Delete
+            </button>
           </div>
         </div>
       </div>
