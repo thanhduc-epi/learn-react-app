@@ -1,14 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 
-class StudentStats extends Component {
-  render() {
-    return (
-      <div className="alert alert-primary m-2" role="alert">
-        Total students{" "}
-        <span className="alert-link">{this.props.totalStudents}</span>.
-      </div>
-    );
-  }
+function StudentStats(props) {
+  return (
+    <div className="alert alert-primary m-2" role="alert">
+      Total students <span className="alert-link">{props.totalStudents}</span>.
+    </div>
+  );
 }
 
 export default StudentStats;
