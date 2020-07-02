@@ -6,11 +6,12 @@ import "bootstrap/dist/css/bootstrap.css";
 import "jquery/dist/jquery";
 import "bootstrap/dist/js/bootstrap.bundle";
 // import App from "./counterApp/App";
-import StudentApp from "./studentApp/StudentApp";
+// import StudentApp from "./studentApp/StudentApp";
+import BugTrackerApp from "./bugTrackerApp/BugTrackerApp";
 
 ReactDOM.render(
   <React.StrictMode>
-    <StudentApp />
+    <BugTrackerApp />
   </React.StrictMode>,
   document.getElementById("root")
 );
