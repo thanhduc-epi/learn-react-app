@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../actions/actions";
 
 const StudentRecord = (props) => {
   return (
@@ -16,13 +19,13 @@ const StudentRecord = (props) => {
             className="btn btn-primary"
             data-toggle="modal"
             data-target="#studentEdit"
-            onClick={() => props.onEditClick(props.student.id)}
+            onClick={() => props.handleDisplayPopup(props.student)}
           >
             Edit
           </button>
           <button
             className="btn btn-primary m-2"
-            onClick={() => props.onDeleteClick(props.student.id)}
+            onClick={() => props.handleDeleteStudent(props.student.id)}
           >
             Delete
           </button>
@@ -32,4 +35,14 @@ const StudentRecord = (props) => {
   );
 };
 
-export default StudentRecord;
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      handleDeleteStudent: actions.deleteStudent,
+      handleDisplayPopup: actions.displayPopup,
+    },
+    dispatch
+  );
+};
+
+export default connect(null, mapDispatchToProps)(StudentRecord);

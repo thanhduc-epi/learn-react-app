@@ -5,14 +5,19 @@ import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.css";
 import "jquery/dist/jquery";
 import "bootstrap/dist/js/bootstrap.bundle";
-// import App from "./counterApp/App";
-// import StudentApp from "./studentApp/StudentApp";
-import BugTrackerApp from "./bugTrackerApp/BugTrackerApp";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import StudentApp from "./studentApp/components/StudentApp";
+import AllReducers from "./studentApp/reducers/index";
+
+const store = createStore(AllReducers);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BugTrackerApp />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <StudentApp />
+    </React.StrictMode>
+  </Provider>,
   document.getElementById("root")
 );
 

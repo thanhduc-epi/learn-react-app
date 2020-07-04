@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as actions from "../actions/actions";
 
-function StudentEdit(props) {
-  const [student, setStudent] = useState(props.student);
+const StudentEdit = (props) => {
+  const [student, setStudent] = useState(props.currentStudent);
 
   useEffect(() => {
-    setStudent(props.student);
-  }, [props.student]);
+    setStudent(props.currentStudent);
+  }, [props.currentStudent]);
 
   return (
     <div
@@ -20,7 +23,7 @@ function StudentEdit(props) {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title" id="studentEditLabel">
-              {student.id != null ? "Edit student" : "Add new student"}
+              {student.id !== 0 ? "Edit student" : "Add new student"}
             </h5>
             <button
               type="button"
@@ -60,10 +63,7 @@ function StudentEdit(props) {
                     id="age"
                     value={student.age}
                     onChange={(e) => {
-                      setStudent({
-                        ...student,
-                        age: e.target.value,
-                      });
+                      setStudent({ ...student, age: e.target.value });
                     }}
                   />
                 </div>
@@ -126,10 +126,7 @@ function StudentEdit(props) {
                     id="gender"
                     value={student.location}
                     onChange={(e) => {
-                      setStudent({
-                        ...student,
-                        location: e.target.value,
-                      });
+                      setStudent({ ...student, location: e.target.value });
                     }}
                   />
                 </div>
@@ -148,7 +145,7 @@ function StudentEdit(props) {
               type="button"
               className="btn btn-primary"
               data-dismiss="modal"
-              onClick={() => props.updateStudent(student)}
+              onClick={() => props.handleUpdateStudent(student)}
             >
               Save changes
             </button>
@@ -157,6 +154,17 @@ function StudentEdit(props) {
       </div>
     </div>
   );
-}
+};
 
-export default StudentEdit;
+const mapStateToProps = (state) => {
+  return { currentStudent: state.currentStudent };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    { handleUpdateStudent: actions.updateStudent },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(StudentEdit);

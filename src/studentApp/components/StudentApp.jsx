@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
-import StudentDashboard from "./studentDashboard";
+import StudentDashboard from "../containers/studentDashboard";
 import StudentAbout from "./studentAbout";
 
 function StudentApp() {
