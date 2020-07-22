@@ -2,7 +2,7 @@ import * as actions from "../actions/actionTypes";
 
 const loadInitState = () => {
   const data = localStorage.getItem("studentStore");
-  if (data != null) {
+  if (data != null && data !== "undefined") {
     return JSON.parse(data);
   } else {
     return [];
